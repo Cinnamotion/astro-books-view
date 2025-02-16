@@ -49,15 +49,12 @@ export const prerender = true;
 			<h1 class="text-5xl font-extrabold text-white">{title}</h1>
 			<p class="text-lg text-gray-300 font-semibold">{author}</p>
 			<p class="text-sm text-gray-400 italic">📅 {date}</p>
-
-			<p class="text-gray-300 text-lg">{description}</p>
-
+			<!-- <p class="text-gray-300 text-lg">{description}</p> -->
 			<div class="mt-4 space-y-2 text-gray-400">
 				<p>📖 <strong>Género:</strong> {genre}</p>
 				<p>📚 <strong>ISBN:</strong> {isbn}</p>
 				<p>⏳ <strong>Tiempo de lectura:</strong> {readtime}</p>
 			</div>
-
 			<div class="prose prose-invert mt-6">
 				<Content />
 			</div>

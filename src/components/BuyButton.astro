@@ -1,7 +1,7 @@
 ---
 import AmazonLogo from "./AmazonLogo.astro";
 
-const country = Astro.request.headers.get("X-Vercel-IP-Country") ?? "MX";
+const country = Astro.request.headers.get("X-Vercel-IP-Country") ?? "USA";
 
 const countries: Record<string, { countryKey: string; countryName: string }> = {
 	USA: { countryKey: "usa", countryName: "Estados Unidos" },
