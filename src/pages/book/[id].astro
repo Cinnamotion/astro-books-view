@@ -1,0 +1,66 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import BuyButton from "../../components/BuyButton.astro";
+import BookScore from "../../components/BookScore.astro";
+
+export async function getStaticPaths() {
+	const books = await getCollection("books");
+	return books.map((book) => ({
+		params: { id: book.slug },
+		props: { book },
+	}));
+}
+
+const { book } = Astro.props;
+const { data, slug } = book;
+const { author, buy, date, description, genre, img, isbn, title, readtime } =
+	data;
+const { Content } = await render(book);
+export const prerender = true;
+---
+
+<Layout title={`${title} - Astro Books`}>
+	<div class="flex flex-col lg:flex-row gap-12 items-center lg:items-start">
+		<aside
+			class="flex flex-col items-center gap-6 bg-gray-800 p-6 rounded-xl shadow-lg"
+		>
+			<a
+				href="/"
+				class="inline-flex items-center gap-2 text-white font-semibold px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-500 hover:from-purple-500 hover:to-indigo-400 transition-all duration-300 ease-in-out shadow-md hover:shadow-xl active:scale-95"
+			>
+				⬅️ Volver atrás
+			</a>
+			<img
+				class="w-72 h-auto rounded-lg shadow-lg"
+				src={`/${img}`}
+				alt={`${title} cover`}
+				transition:name={`img-${slug}`}
+			/>
+			<BookScore server:defer id={slug}>
+				<span slot="fallback" class="text-xs opacity-70"
+					>Cargando puntuación...</span
+				>
+			</BookScore>
+			<BuyButton buy={buy} />
+		</aside>
+
+		<main class="max-w-3xl space-y-4 bg-gray-900 p-6 rounded-xl shadow-lg">
+			<h1 class="text-5xl font-extrabold text-white">{title}</h1>
+			<p class="text-lg text-gray-300 font-semibold">{author}</p>
+			<p class="text-sm text-gray-400 italic">📅 {date}</p>
+
+			<p class="text-gray-300 text-lg">{description}</p>
+
+			<div class="mt-4 space-y-2 text-gray-400">
+				<p>📖 <strong>Género:</strong> {genre}</p>
+				<p>📚 <strong>ISBN:</strong> {isbn}</p>
+				<p>⏳ <strong>Tiempo de lectura:</strong> {readtime}</p>
+			</div>
+
+			<div class="prose prose-invert mt-6">
+				<Content />
+			</div>
+		</main>
+	</div>
+</Layout>
